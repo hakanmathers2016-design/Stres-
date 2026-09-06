@@ -8,6 +8,8 @@
     :root{
       --bg1:#0b1020;
       --bg2:#121a33;
+      --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.09);
       --text:#eef2ff;
       --muted: rgba(238,242,255,.75);
       --accent:#ff6aa9;
@@ -35,6 +37,7 @@
       overflow-x:hidden;
     }
 
+    /* Floating particles */
     .particle{
       position:fixed;
       width:10px;height:10px;
@@ -79,7 +82,11 @@
       font-size:22px;
       box-shadow: 0 10px 30px rgba(255,106,169,.25);
     }
-    .title h1{ margin:0; font-size: 18px; letter-spacing:.2px; }
+    .title h1{
+      margin:0;
+      font-size: 18px;
+      letter-spacing:.2px;
+    }
     .title p{
       margin:4px 0 0;
       color: var(--muted);
@@ -117,7 +124,10 @@
       gap:10px;
       margin-bottom: 10px;
     }
-    .sectionTitle h2{ margin:0; font-size: 16px; }
+    .sectionTitle h2{
+      margin:0;
+      font-size: 16px;
+    }
     .pill{
       font-size: 12px;
       color: rgba(238,242,255,.9);
@@ -136,7 +146,7 @@
       .grid2{grid-template-columns:1fr}
     }
 
-    button{
+    button, .btn{
       cursor:pointer;
       border: 1px solid rgba(255,255,255,.18);
       background: rgba(255,255,255,.07);
@@ -181,6 +191,54 @@
       line-height:1.4;
     }
 
+    /* Breath */
+    .breathWrap{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      align-items:center;
+    }
+    .orbArea{
+      position:relative;
+      height: 220px;
+      border-radius: 16px;
+      overflow:hidden;
+      background:
+        radial-gradient(500px 260px at 50% 60%, rgba(124,92,255,.25), transparent 55%),
+        radial-gradient(420px 240px at 50% 40%, rgba(255,106,169,.22), transparent 55%),
+        rgba(0,0,0,.14);
+      border: 1px solid rgba(255,255,255,.10);
+    }
+    .orb{
+      position:absolute;
+      left:50%;
+      top:50%;
+      width: 92px;
+      height: 92px;
+      transform: translate(-50%,-50%);
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.95), rgba(255,106,169,.70), rgba(124,92,255,.55));
+      box-shadow: 0 0 60px rgba(255,106,169,.18), inset 0 0 22px rgba(255,255,255,.35);
+      transition: width 1.8s ease, height 1.8s ease, filter 1.8s ease;
+      filter: saturate(1.1);
+    }
+    .breathText{
+      position:absolute;
+      inset:auto 12px 12px 12px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(0,0,0,.26);
+      border: 1px solid rgba(255,255,255,.10);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      color: rgba(238,242,255,.95);
+      font-size: 13.5px;
+    }
+    .breathText .mono{ font-family: var(--mono); color: rgba(238,242,255,.85) }
+
+    /* Game */
     canvas{
       width:100%;
       height: 300px;
@@ -209,6 +267,7 @@
       border-radius: 12px;
     }
 
+    /* Footer */
     footer{
       max-width:980px;
       margin: 0 auto;
@@ -218,10 +277,13 @@
       position:relative;
       z-index:1;
     }
+    a{ color: rgba(255,106,169,.95); text-decoration:none }
+    a:hover{ text-decoration:underline }
   </style>
 </head>
 <body>
   <script>
+    // Soft particles
     (function(){
       const count = 18;
       for(let i=0;i<count;i++){
@@ -244,12 +306,13 @@
       <div class="logo">💗</div>
       <div class="title">
         <h1>Yavrum için mini rahatlama köşesi</h1>
-        <p>Bu sayfa “düzeltmek” için değil; <b>yanında olmak</b> için. İstersen ağla, istersen gül. Ben buradayım.</p>
+        <p>Şu an zor olabilir… Bu sayfa “düzeltmek” için değil; <b>yanında olmak</b> için. İstersen ağla, istersen gül. Ben buradayım.</p>
       </div>
     </div>
   </header>
 
   <main>
+    <!-- LEFT -->
     <section class="card">
       <div class="sectionTitle">
         <h2>Yavrum, şu an neye ihtiyacın var?</h2>
@@ -260,6 +323,7 @@
         <button class="primary" id="btnComfort">“Ağlamak istiyorum” modu</button>
         <button class="good" id="btnSmile">“Biraz gülmek istiyorum” modu</button>
         <button id="btnRandom">Bana rastgele tatlı bir şey söyle</button>
+        <button class="danger" id="btnGround">Panik/kalp sıkışması varsa</button>
       </div>
 
       <div style="height:12px"></div>
@@ -267,11 +331,12 @@
       <div class="bigMessage" id="messageBox">
         <b>Yavrum</b>, burası senin güvenli alanın.  
         <br><br>
-        İstersen sadece ekrana bak. İstersen küçük oyunu oynayıp zihnini dağıt.  
+        İstersen sadece ekrana bak. İstersen nefes bölümünü aç. İstersen de küçük oyunu oynayıp zihnini dağıt.  
         <br><br>
-        <span style="color:rgba(238,242,255,.75)">Not:</span> Kulaklık yok ama sorun değil; aşağıdaki “ambiyans”ı tamamen sessizde de kullanabilirsin.
+        <span style="color:rgba(238,242,255,.75)">Not:</span> Kulaklık yoksa sorun değil; aşağıdaki “ambiyans”ı tamamen sessizde de kullanabilirsin.
       </div>
       <div class="hint">
+        Eğer gerçekten kendine zarar verme düşüncesi, dayanılmaz bir kriz, “yalnız kalamam” hissi varsa lütfen çevrenden birine haber ver ve acil yardım al. Bu sayfa sevgiyle destek olur ama profesyonel yardımın yerini tutmaz.
       </div>
 
       <div style="height:14px"></div>
@@ -286,23 +351,32 @@
         <button id="btnModeRain">Yağmur hissi</button>
         <button id="btnModeWarm">Sıcak pıtırtı</button>
       </div>
-      <div class="hint">Yavrum, kulaklığın yok o yüzden kısıkta kullan. İstersen hiç açma; oyun ve yazılar da yeterli.</div>
+      <div class="hint">Yavrum, kulaklık yoksa lütfen çok kısık kullan. İstersen hiç açma; görsel ve nefes kısmı da yeterli.</div>
 
       <div style="height:14px"></div>
 
       <div class="sectionTitle">
-        <h2>Mini “iyi hisset” menüsü</h2>
-        <span class="pill">2 dakika</span>
+        <h2>Nefes koçu (4 sn al • 6 sn ver)</h2>
+        <span class="pill" id="breathState">hazır</span>
       </div>
-      <div class="grid2">
-        <button id="btnList1">3 şey söyle</button>
-        <button id="btnList2">1 küçük hedef</button>
-        <button id="btnList3">Vücut taraması</button>
-        <button id="btnList4">Kendine sarıl</button>
+
+      <div class="breathWrap">
+        <div class="orbArea" id="orbArea">
+          <div class="orb" id="orb"></div>
+          <div class="breathText">
+            <div id="breathText">Yavrum, istersen başlayalım. Sakin sakin…</div>
+            <div class="mono" id="breathCount">00:00</div>
+          </div>
+        </div>
+        <div class="grid2">
+          <button class="good" id="btnBreathStart">Nefesi Başlat</button>
+          <button id="btnBreathStop">Durdur</button>
+        </div>
+        <div class="hint">Bu ritim çoğu kişide sinir sistemini yumuşatır. Baş dönmesi olursa dur, normale dön.</div>
       </div>
-      <div class="hint">İstersen sadece birini yap. “Az bile olsa” yeter yavrum.</div>
     </section>
 
+    <!-- RIGHT -->
     <aside class="card">
       <div class="sectionTitle">
         <h2>Mini oyun: Kalpleri yakala</h2>
@@ -319,11 +393,26 @@
         <button id="btnGameStop">Durdur</button>
       </div>
       <div class="hint">Ekrana dokun/tıkla: kalbi yakala. Kaçarsa sorun değil yavrum, tekrar denersin.</div>
+
+      <div style="height:14px"></div>
+
+      <div class="sectionTitle">
+        <h2>Mini “iyi hisset” menüsü</h2>
+        <span class="pill">2 dakika</span>
+      </div>
+      <div class="grid2">
+        <button id="btnList1">3 şey söyle</button>
+        <button id="btnList2">1 küçük hedef</button>
+        <button id="btnList3">Vücut taraması</button>
+        <button id="btnList4">Kendine sarıl</button>
+      </div>
+      <div class="hint">İstersen sadece birini yap. “Az bile olsa” yeter yavrum.</div>
     </aside>
   </main>
 
   <footer>
-    Bu sayfa “yavrum” için sevgiyle hazırlandı. İstersen metinleri kişiselleştirip tekrar gönder: kodun içindeki cümleleri değiştirmen yeterli.
+    Bu sayfa “yavrum” için sevgiyle hazırlandı. İstersen metinleri kişiselleştirip tekrar gönder:  
+    <span style="opacity:.9">Kodun içindeki cümleleri değiştirmen yeterli.</span>
   </footer>
 
   <script>
@@ -337,23 +426,36 @@
     const messageBox = document.getElementById('messageBox');
 
     const comfortLines = [
-      `Ağlamak istemen <b>çok normal</b>. Bazen içimizde biriken şeyin çıkması gerekir. Ben seni “düzeltmeye” çalışmıyorum; yanında duruyorum.`,
-      `Şu an en çok ihtiyacın olan şey “geçmesi” değil; <b>anlaşılmak</b>. Ben seni anlıyorum. Zor ve sıkılmış hissediyorsun.`,
-      `Kendine kızma. Bu duygu bir “hata veya suç” değil. Vücudun “yoruldum” diyor. Birlikte yavaşlayalım bolca vaktimiz var.`,
+      `Yavrum… ağlamak istemen <b>çok normal</b>. Bazen içimizde biriken şeyin çıkması gerekir. Ben seni “düzeltmeye” çalışmıyorum; yanında duruyorum.`,
+      `Yavrum, şu an en çok ihtiyacın olan şey “geçmesi” değil; <b>anlaşılmak</b>. Ben seni anlıyorum. Zor ve ağır hissediyorsun.`,
+      `Yavrum, kendine kızma. Bu duygu bir “hata” değil. Vücudun “yoruldum” diyor. Birlikte yavaşlayalım.`,
+      `Yavrum, istersen 1 dakika hiçbir şey yapma. Sadece nefesini izle. Ben burada bekliyorum.`,
     ];
 
     const smileLines = [
-      `Mini bir görev: <b>kaşlarını</b> çok az kaldır. Sonra gözlerini kıs ve fotoğraf çek.`,
-      `Bugün “mutlu” sayılman için tek şart: <b>her halinle sevildiğini bilmen</b>.`,
-      `Hadi  kalp oyununu oynayalım. Skor önemli değil; Benim kalbim zaten sende.`,
+      `Yavrum, mini bir görev: <b>kaşlarını</b> çok az kaldır. Sonra omuzlarını indir. “Tamam” deme; sadece “buradayım” de.`,
+      `Yavrum, şaka gibi ama işe yarar: 5 saniye “çok ciddi” bir surat yap, sonra bilerek komik bir yüz ifadesi dene. Beyin bazen buna bile tutunur.`,
+      `Yavrum, bugün “başarılı” sayılman için tek şart: <b>dayanmış olman</b>. Bu yeter.`,
+      `Yavrum, hadi 30 saniyelik kalp oyununu oynayalım. Skor değil; hareket etmek kazanmak.`,
     ];
 
     const randomSweet = [
-      `Senin kalbin çok güzel… ve ben o kalbin yorulduğu günlerde de yanındayım.`,
-      `Küçük bir hatırlatma: Korku ve üzüntün “büyük” olabilir; ama bu <b>sonsuz</b> değil.`,
-      `Unutma ben seni tek bir halinle değil; <b>tüm hallerinle</b> seviyorum.`,
+      `Yavrum, senin kalbin çok güzel… ve ben o kalbin yorulduğu günlerde de yanındayım.`,
+      `Yavrum, küçük bir hatırlatma: Hislerin “büyük” olabilir; ama bu <b>sonsuz</b> değil.`,
+      `Yavrum, şu an gözlerin dolsa bile, ben seni güçlü görüyorum. Çünkü hâlâ buradasın.`,
+      `Yavrum, kendine nazik davran. Bugün “yumuşak gün”.`,
+      `Yavrum, ben seni tek bir halinle değil; <b>tüm hallerinle</b> seviyorum.`,
     ];
 
+    const grounding = `
+      <b>Yavrum, eğer panik/kasılma varsa:</b><br><br>
+      1) Etrafında <b>5</b> şey gör (renk/şekil söyle).<br>
+      2) <b>4</b> şey hisset (kıyafet, koltuk, ayak tabanın).<br>
+      3) <b>3</b> şey duy (en küçük sesi bile).<br>
+      4) <b>2</b> şey kokla (yoksa hayal et).<br>
+      5) <b>1</b> şey tat (su içmek bile olur).<br><br>
+      Sonra nefese geç: <b>4 al, 6 ver</b>. Ben buradayım.
+    `;
 
     function setMessage(html){
       messageBox.innerHTML = html;
@@ -362,7 +464,7 @@
 
     document.getElementById('btnComfort').onclick = () => {
       const t = comfortLines[Math.floor(Math.random()*comfortLines.length)];
-      setMessage(t);
+      setMessage(t + `<br><br><span style="color:rgba(238,242,255,.78)">İstersen şimdi “Nefesi Başlat”a bas yavrum.</span>`);
     };
     document.getElementById('btnSmile').onclick = () => {
       const t = smileLines[Math.floor(Math.random()*smileLines.length)];
@@ -373,7 +475,98 @@
     };
     document.getElementById('btnGround').onclick = () => setMessage(grounding);
 
-    
+    // Mini menu actions
+    document.getElementById('btnList1').onclick = () => setMessage(`
+      <b>Yavrum, 3 şey söyle:</b><br><br>
+      • Şu an en ufak da olsa iyi olan 1 şey<br>
+      • Bugün kendinle gurur duyduğun 1 minicik şey<br>
+      • Yarın için “olsun” diyeceğin 1 küçük dilek<br><br>
+      Yazmak zorunda değilsin; içinden söylemen de yeter.
+    `);
+
+    document.getElementById('btnList2').onclick = () => setMessage(`
+      <b>Yavrum, 1 küçük hedef:</b><br><br>
+      “Şu an” için hedefin sadece şu olsun: <b>bir bardak su</b> / <b>yüzünü yıkamak</b> / <b>pencereyi açmak</b>.<br><br>
+      Bittiğinde kendine “aferin” demeyi unutma. Küçük şeyler büyüktür.
+    `);
+
+    document.getElementById('btnList3').onclick = () => setMessage(`
+      <b>Yavrum, 45 sn vücut taraması:</b><br><br>
+      Alnını gevşet… çeneni bırak… omuzlarını indir… karnını serbest bırak…<br>
+      Ayak tabanını hisset… “buradayım” de.<br><br>
+      Kötü his bitmek zorunda değil; sadece biraz yumuşasın yeter.
+    `);
+
+    document.getElementById('btnList4').onclick = () => setMessage(`
+      <b>Yavrum, kendine sarıl:</b><br><br>
+      Kollarını çaprazlayıp omuzlarını tut. 15 saniye hafifçe sık.<br>
+      Sonra bırak. Tekrar 15 saniye.<br><br>
+      Bu, sinir sistemine “güvendeyim” mesajı verir.
+    `);
+
+    // Breath coach (4-6)
+    const orb = document.getElementById('orb');
+    const breathText = document.getElementById('breathText');
+    const breathCount = document.getElementById('breathCount');
+    const breathState = document.getElementById('breathState');
+
+    let breathTimer = null;
+    let breathStartAt = 0;
+    let phase = 'idle'; // inhale/exhale
+    let phaseStart = 0;
+
+    function mmss(ms){
+      const s = Math.floor(ms/1000);
+      const m = Math.floor(s/60);
+      const r = s%60;
+      return String(m).padStart(2,'0') + ':' + String(r).padStart(2,'0');
+    }
+
+    function setOrb(size){
+      orb.style.width = size+'px';
+      orb.style.height = size+'px';
+    }
+
+    function startBreath(){
+      if(breathTimer) return;
+      breathStartAt = performance.now();
+      phase = 'inhale';
+      phaseStart = performance.now();
+      breathState.textContent = 'çalışıyor';
+      setOrb(142);
+      breathText.innerHTML = `Yavrum… <b>4 sn nefes al</b> (burundan, yumuşak)`;
+      breathTimer = setInterval(()=>{
+        const now = performance.now();
+        breathCount.textContent = mmss(now - breathStartAt);
+
+        const elapsed = (now - phaseStart)/1000;
+        if(phase === 'inhale' && elapsed >= 4){
+          phase = 'exhale';
+          phaseStart = now;
+          setOrb(92);
+          breathText.innerHTML = `Yavrum… <b>6 sn nefes ver</b> (ağzından, yavaş)`;
+        } else if(phase === 'exhale' && elapsed >= 6){
+          phase = 'inhale';
+          phaseStart = now;
+          setOrb(142);
+          breathText.innerHTML = `Yavrum… <b>4 sn nefes al</b>`;
+        }
+      }, 120);
+    }
+
+    function stopBreath(){
+      if(breathTimer){
+        clearInterval(breathTimer);
+        breathTimer = null;
+      }
+      breathState.textContent = 'hazır';
+      breathText.textContent = 'Yavrum, istersen başlayalım. Sakin sakin…';
+      breathCount.textContent = '00:00';
+      setOrb(92);
+    }
+
+    document.getElementById('btnBreathStart').onclick = startBreath;
+    document.getElementById('btnBreathStop').onclick = stopBreath;
 
     // WebAudio gentle ambience (no external files)
     let audioCtx = null;
@@ -400,15 +593,17 @@
       audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
       master = audioCtx.createGain();
-      master.gain.value = 0.0;
+      master.gain.value = 0.0; // start muted then fade in
       master.connect(audioCtx.destination);
 
+      // Filter to soften
       filter = audioCtx.createBiquadFilter();
       filter.type = 'lowpass';
       filter.frequency.value = 900;
       filter.Q.value = 0.7;
       filter.connect(master);
 
+      // Noise
       noise = audioCtx.createBufferSource();
       noise.buffer = createNoiseBuffer(audioCtx);
       noise.loop = true;
@@ -418,9 +613,10 @@
       noise.connect(noiseGain);
       noiseGain.connect(filter);
 
+      // Tone (very soft)
       tone = audioCtx.createOscillator();
       tone.type = 'sine';
-      tone.frequency.value = 196;
+      tone.frequency.value = 196; // G3
       toneGain = audioCtx.createGain();
       toneGain.gain.value = 0.0;
       tone.connect(toneGain);
@@ -431,12 +627,13 @@
 
       setAudioMode(mode);
 
+      // fade in gently
       const t = audioCtx.currentTime;
       master.gain.cancelScheduledValues(t);
       master.gain.setValueAtTime(0.0, t);
       master.gain.linearRampToValueAtTime(0.12, t + 1.5);
 
-      setMessage(`Ambiyans çok kısık açıldı. İstersen sessizde de kalabilir. <br><br>İstersen şimdi “Biraz gülmek istiyorum” moduna bas ya da oyunu aç.`);
+      setMessage(`Yavrum, ambiyans çok kısık açıldı. İstersen sessizde de kalabilir. <br><br><span style="color:rgba(238,242,255,.78)">Hazırsan nefese geçelim mi?</span>`);
     }
 
     function stopAudio(){
@@ -465,6 +662,7 @@
         tone.frequency.setValueAtTime(196, t);
         toneGain.gain.setValueAtTime(0.015, t);
 
+        // subtle random flutter
         const lfo = audioCtx.createOscillator();
         lfo.type = 'sine';
         lfo.frequency.value = 0.12;
@@ -473,14 +671,16 @@
         lfo.connect(lfoGain);
         lfoGain.connect(filter.frequency);
         lfo.start();
+        // store on filter for cleanup if restarted
         filter._lfo && filter._lfo.stop && filter._lfo.stop();
         filter._lfo = lfo;
       } else {
         filter.frequency.setValueAtTime(1200, t);
         noiseGain.gain.setValueAtTime(0.04, t);
-        tone.frequency.setValueAtTime(247, t);
+        tone.frequency.setValueAtTime(247, t); // B3
         toneGain.gain.setValueAtTime(0.03, t);
 
+        // slow warm pulsing
         const lfo = audioCtx.createOscillator();
         lfo.type = 'sine';
         lfo.frequency.value = 0.08;
@@ -494,18 +694,22 @@
       }
     }
 
-    document.getElementById('btnAudio').onclick = () => startAudio();
+    document.getElementById('btnAudio').onclick = async () => {
+      // iOS/Chrome requires user gesture; this is a button click.
+      startAudio();
+      startBreath();
+    };
     document.getElementById('btnMute').onclick = () => {
       stopAudio();
-      setMessage(`Sessizlik de iyidir. İstersen oyun ve mini notlarla devam edelim.`);
+      setMessage(`Tamam yavrum. Sessizlik de iyidir. İstersen sadece nefes ve oyunla devam edelim.`);
     };
     document.getElementById('btnModeRain').onclick = () => {
       setAudioMode('rain');
-      setMessage(`“yağmur hissi” seçildi. Çok kısık kalsın, yeter.`);
+      setMessage(`Yavrum, “yağmur hissi” seçildi. Çok kısık kalsın, yeter.`);
     };
     document.getElementById('btnModeWarm').onclick = () => {
       setAudioMode('warm');
-      setMessage(`“sıcak pıtırtı” seçildi. İçin biraz yumuşasın diye…`);
+      setMessage(`Yavrum, “sıcak pıtırtı” seçildi. İçin biraz yumuşasın diye…`);
     };
 
     // Game: catch hearts
@@ -525,6 +729,7 @@
     let gameLoopReq = null;
 
     function resizeCanvas(){
+      // keep internal resolution crisp
       const rect = canvas.getBoundingClientRect();
       const dpr = Math.max(1, window.devicePixelRatio || 1);
       canvas.width = Math.floor(rect.width * dpr);
@@ -553,6 +758,7 @@
       ctx.translate(x,y);
       ctx.scale(r/18, r/18);
       ctx.beginPath();
+      // heart path
       ctx.moveTo(0, 6);
       ctx.bezierCurveTo(0, -10, -18, -10, -18, 3);
       ctx.bezierCurveTo(-18, 14, -6, 18, 0, 26);
@@ -573,7 +779,7 @@
     function setStats(){
       scoreEl.textContent = 'skor: ' + score;
       comboEl.textContent = 'combo: ' + combo;
-      timerEl.textContent = 'süre: ' + Math.ceil(timeLeft);
+      timerEl.textContent = 'süre: ' + timeLeft;
     }
 
     function startGame(){
@@ -596,7 +802,7 @@
 
     function endGame(){
       stopGame();
-      setMessage(`Bitti Kestuk . Skor: <b>${score}</b>. <br><br>İstersen “Rastgele tatlı bir şey” butonuna bas ya da ambiyansı çok kısık aç.`);
+      setMessage(`Bitti yavrum. Skor: <b>${score}</b>. <br><br>Şimdi istersen nefeste 1 tur daha… ya da rastgele tatlı cümle butonuna bas.`);
     }
 
     function loop(ts){
@@ -604,12 +810,20 @@
       const dt = Math.min(0.033, (ts - lastTs)/1000);
       lastTs = ts;
 
+      // countdown
+      if(Math.floor(ts/1000) !== Math.floor((ts - dt*1000)/1000)){
+        // roughly each second
+      }
+      // precise timer: decrease by dt, update integer display
+      const old = timeLeft;
       timeLeft = Math.max(0, timeLeft - dt);
-      setStats();
+      const show = Math.ceil(timeLeft);
+      if(show !== Math.ceil(old)) setStats();
 
       const w = canvas.getBoundingClientRect().width;
       const h = canvas.getBoundingClientRect().height;
 
+      // spawn hearts
       lastSpawn += dt;
       if(lastSpawn > 0.55){
         spawnHeart();
@@ -617,21 +831,27 @@
         lastSpawn = 0;
       }
 
+      // update
       for(const heart of hearts){
         heart.life += dt;
         heart.y -= heart.vy * dt;
         heart.x += heart.vx * dt;
         heart.vx *= 0.995;
       }
-
+      // remove offscreen
       const before = hearts.length;
       hearts = hearts.filter(he => he.y > -60);
       if(hearts.length < before){
         combo = Math.max(0, combo - 1);
+        setStats();
       }
 
+      // draw
       ctx.clearRect(0,0, canvas.width, canvas.height);
+      ctx.save();
+      ctx.scale(1,1);
 
+      // soft grid glow
       ctx.globalAlpha = 0.22;
       ctx.strokeStyle = 'rgba(255,255,255,.08)';
       for(let i=0;i<6;i++){
@@ -641,11 +861,14 @@
       }
       ctx.globalAlpha = 1;
 
+      // hearts
       for(const he of hearts){
         drawHeart(he.x, he.y, he.r, he.hue);
       }
 
+      // time up
       if(timeLeft <= 0.001){
+        setStats();
         endGame();
         return;
       }
@@ -659,6 +882,7 @@
       const x = clientX - rect.left;
       const y = clientY - rect.top;
 
+      // find nearest heart within radius
       let hitIndex = -1;
       let best = 99999;
       for(let i=0;i<hearts.length;i++){
@@ -675,10 +899,11 @@
         hearts.splice(hitIndex,1);
         combo += 1;
         score += 10 + Math.min(20, combo);
+        setStats();
       } else {
         combo = Math.max(0, combo - 1);
+        setStats();
       }
-      setStats();
     }
 
     canvas.addEventListener('click', (e)=>handleTap(e.clientX, e.clientY));
@@ -690,11 +915,12 @@
     document.getElementById('btnGameStart').onclick = startGame;
     document.getElementById('btnGameStop').onclick = () => {
       stopGame();
-      setMessage(`Tamam oyun bitti. İstersen mini notlara geçiyoruz.`);
+      setMessage(`Tamam yavrum. Oyunu kapattık. Şimdi ister nefes, ister tatlı mesaj… hangisi iyi gelirse.`);
     };
 
+    // Friendly first message after a short delay
     setTimeout(()=>{
-      setMessage(`Yavrum, şu an zorlanıyor olabilirsin… Ama yalnız değilsin. <br><br>İstersen “Ağlamak istiyorum” moduna bas, ya da  oyununu aç. Ben buradayım.Her zaman olduğu gibi beklerim.`);
+      setMessage(`Yavrum, şu an zorlanıyor olabilirsin… Ama yalnız değilsin. <br><br>İstersen önce <b>Nefesi Başlat</b>, sonra 30 sn oyun. Sonra yine buradayım.`);
     }, 800);
   </script>
 </body>
