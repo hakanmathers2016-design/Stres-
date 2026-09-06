@@ -13,7 +13,8 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            /* Arka plan: Yumuşak mor ve mavi geçişi (Soft Romantik) */
+            background: linear-gradient(135deg, #E6E6FA 0%, #B0C4DE 100%);
             height: 100vh;
             display: flex;
             flex-direction: column;
@@ -25,19 +26,21 @@
         }
 
         .container {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             padding: 40px 30px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             max-width: 90%;
             width: 450px;
             z-index: 10;
+            transition: opacity 0.5s ease;
         }
 
         h1 {
             font-size: 24px;
             margin-bottom: 20px;
-            color: #d4a5a5;
+            /* Başlık rengi: Yumuşak mor/mavi tonu */
+            color: #7B68EE;
             font-weight: 600;
         }
 
@@ -49,101 +52,219 @@
         }
 
         .button {
-            background-color: #d4a5a5;
+            /* Ana buton rengi: Yumuşak mor/mavi tonu */
+            background-color: #7B68EE;
             color: white;
             border: none;
-            padding: 15px 30px;
+            padding: 12px 25px;
             font-size: 16px;
             border-radius: 30px;
             cursor: pointer;
             transition: background 0.3s ease, transform 0.2s ease;
-            margin-top: 15px;
+            margin: 10px 5px;
             font-weight: bold;
-            box-shadow: 0 4px 15px rgba(212, 165, 165, 0.4);
+            /* Box shadow rengi güncelle */
+            box-shadow: 0 4px 15px rgba(123, 104, 238, 0.4);
         }
 
         .button:hover {
-            background-color: #c48b8b;
+            /* Hover rengi */
+            background-color: #6A5ACD;
             transform: scale(1.05);
         }
 
+        .button-secondary {
+            background-color: #fff;
+            /* İkincil buton rengi */
+            color: #7B68EE;
+            border: 2px solid #7B68EE;
+            box-shadow: none;
+        }
+
+        .button-secondary:hover {
+            /* Hover rengi */
+            background-color: #F8F8FF;
+        }
+
         #messageBox {
-            margin-top: 25px;
+            margin-top: 15px;
             font-size: 17px;
             font-weight: 500;
-            color: #c48b8b;
+            /* Mesaj kutusu yazı rengi */
+            color: #6A5ACD;
             min-height: 45px;
             transition: opacity 0.4s ease;
             font-style: italic;
         }
 
-        /* Uçuşan Kalpler İçin Animasyon */
+        /* Uçuşan Kalpler ve Oyun Kalpleri İçin Animasyon */
         .heart {
             position: absolute;
             font-size: 24px;
-            color: #f7a8a8;
+            cursor: pointer;
+            user-select: none;
             animation: floatUp 4s linear infinite;
-            opacity: 0;
             z-index: 1;
+        }
+
+        .game-heart {
+            font-size: 35px; /* Oyundaki kalpler dokunması kolay olsun diye biraz daha büyük */
+            animation: floatGame 6s linear infinite;
         }
 
         @keyframes floatUp {
             0% { transform: translateY(100vh) scale(0.5); opacity: 1; }
             100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
         }
+
+        @keyframes floatGame {
+            0% { transform: translateY(105vh) rotate(0deg); opacity: 0.9; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0.9; }
+        }
+
+        /* Oyun Ekranı */
+        #gameScreen {
+            display: none;
+        }
+
+        #scoreBoard {
+            font-size: 20px;
+            font-weight: bold;
+            /* Skor tabelası rengi */
+            color: #7B68EE;
+            margin: 15px 0;
+        }
+
+        #gameMessage {
+            font-size: 16px;
+            /* Oyun mesajı rengi */
+            color: #6A5ACD;
+            font-style: italic;
+            min-height: 40px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Yanındayım Yavrum 🤍</h1>
+
+    <!-- ANA EKRAN -->
+    <div id="mainScreen" class="container">
+        <h1>her zaman yanındayım yavrum. 🤍</h1>
         <p>Şu an aramızda mesafeler olabilir ama kalbim tam olarak orada, seninle.</p>
         <p>Ağlamak istiyorsan bırak aksın gözyaşların. Ben her damlasında seni sarmak için buradayım.</p>
-        <p>Her şey geçecek. Sen çok güçlüsün ve ben hep yanında olacağım.</p>
+        <p>Her şey geçecek. Sen çok güçlüsün ve ben her zaman yanındayım.</p>
         
-        <button class="button" onclick="showMessage()">Bana Sarıl</button>
+        <div>
+            <button class="button" onclick="showMessage()">Bana Sarıl</button>
+            <button class="button button-secondary" onclick="startGame()">Biraz Kafamı Dağıt 🌸</button>
+        </div>
         <div id="messageBox"></div>
     </div>
 
+    <!-- OYUN EKRANI -->
+    <div id="gameScreen" class="container">
+        <h1>Birlikte Kalp Toplayalım 🎈</h1>
+        <p>Aşağıdan gelen kalpleri yakala. Bakalım neler olacak...</p>
+        <div id="scoreBoard">Yakalanan Kalpler: <span id="score">0</span></div>
+        <p id="gameMessage"></p>
+        <button class="button button-secondary" onclick="stopGame()">Geri Dön</button>
+    </div>
+
     <script>
-        // Rastgele çıkacak sevgi dolu mesajlar
+        // ANA EKRAN İŞLEVLERİ
         const messages = [
             "Kocaman, sımsıcak sarıldım sana...",
-            "Güzelim her zaman yanındayım.",
-            "Ne kadar uzakta olursak olalım, ellerim ellerinde.",
+            "Güzelim iyi ki varsın.",
+            "Ne kadar uzakta olursan ol, ellerim ellerinde.",
             "Gülüşünü dünyalara değişmem.",
             "Derin bir nefes al, ben hep seninleyim.",
             "Şu an yanında olamasam da sevgim seni sarıp sarmalasın.",
-            "İyi ki varsın, iyi ki buradasın."
+            "İyi ki varsın, iyi ki burdasın."
         ];
 
         function showMessage() {
             const messageBox = document.getElementById('messageBox');
             const randomIndex = Math.floor(Math.random() * messages.length);
             
-            // Yumuşak geçiş efekti
             messageBox.style.opacity = 0;
             setTimeout(() => {
                 messageBox.textContent = messages[randomIndex];
                 messageBox.style.opacity = 1;
             }, 200);
 
-            createHearts(6);
+            createHearts(6, false);
         }
 
-        function createHearts(amount) {
+        function createHearts(amount, isGameHeart) {
             for (let i = 0; i < amount; i++) {
                 const heart = document.createElement('div');
-                heart.innerHTML = '🤍';
-                heart.className = 'heart';
-                // Ekranda rastgele yerlerden çıkması için
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+                // Kalp emojilerini çeşitlendir (Mor, Mavi, Lavanta tonları)
+                const emojis = ['🤍', '💜', '💙', '🌸', '✨'];
+                heart.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+                
+                if (isGameHeart) {
+                    heart.className = 'heart game-heart';
+                    heart.onclick = function() { catchHeart(this); };
+                    heart.style.animationDuration = (Math.random() * 3 + 4) + 's'; // Oyunda daha yavaş
+                } else {
+                    heart.className = 'heart';
+                    heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+                    setTimeout(() => { heart.remove(); }, 4000);
+                }
+                
+                heart.style.left = Math.random() * 90 + 'vw';
                 document.body.appendChild(heart);
+            }
+        }
 
-                // Animasyon bitince kalbi DOM'dan temizle
-                setTimeout(() => {
-                    heart.remove();
-                }, 4000);
+        // OYUN İŞLEVLERİ
+        let score = 0;
+        let gameInterval;
+
+        function startGame() {
+            document.getElementById('mainScreen').style.display = 'none';
+            document.getElementById('gameScreen').style.display = 'block';
+            score = 0;
+            updateScoreText();
+            document.getElementById('gameMessage').textContent = "";
+            
+            // Her saniye yeni bir kalp üret
+            gameInterval = setInterval(() => {
+                createHearts(1, true);
+            }, 800);
+        }
+
+        function stopGame() {
+            document.getElementById('gameScreen').style.display = 'none';
+            document.getElementById('mainScreen').style.display = 'block';
+            clearInterval(gameInterval);
+            
+            // Ekrandaki tüm oyun kalplerini temizle
+            const gameHearts = document.querySelectorAll('.game-heart');
+            gameHearts.forEach(h => h.remove());
+        }
+
+        function catchHeart(element) {
+            element.remove(); // Tıklanan kalbi sil
+            score++;
+            updateScoreText();
+            checkMilestones();
+        }
+
+        function updateScoreText() {
+            document.getElementById('score').textContent = score;
+        }
+
+        function checkMilestones() {
+            const msgElement = document.getElementById('gameMessage');
+            if (score === 10) {
+                msgElement.textContent = "Harikasın! Tıpkı gerçekte olduğun gibi... 🤍";
+            } else if (score === 20) {
+                msgElement.textContent = "Bütün kalplerim senin, biliyorsun değil mi? 🌸";
+            } else if (score === 30) {
+                msgElement.textContent = "Yüzündeki ufak tebessümü hisseder gibiyim... Seni seviyorum. ✨";
+            } else if (score === 50) {
+                msgElement.textContent = "Sen her şeyin üstesinden gelirsin ve ben her zaman yanında olacağım ! 💜";
             }
         }
     </script>
