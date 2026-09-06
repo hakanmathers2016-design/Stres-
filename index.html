@@ -1,0 +1,701 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Yavrum İçin – Mini Rahatlama Köşesi</title>
+  <style>
+    :root{
+      --bg1:#0b1020;
+      --bg2:#121a33;
+      --text:#eef2ff;
+      --muted: rgba(238,242,255,.75);
+      --accent:#ff6aa9;
+      --accent2:#7c5cff;
+      --good:#2fe4ab;
+      --warn:#ffd166;
+      --shadow: 0 20px 60px rgba(0,0,0,.45);
+      --radius: 18px;
+      --radius2: 26px;
+      --border: 1px solid rgba(255,255,255,.12);
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: var(--sans);
+      color: var(--text);
+      min-height:100vh;
+      background:
+        radial-gradient(1200px 800px at 20% 10%, rgba(124,92,255,.25), transparent 60%),
+        radial-gradient(1000px 700px at 80% 20%, rgba(255,106,169,.22), transparent 60%),
+        radial-gradient(900px 600px at 50% 90%, rgba(47,228,171,.12), transparent 55%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+      overflow-x:hidden;
+    }
+
+    .particle{
+      position:fixed;
+      width:10px;height:10px;
+      border-radius:50%;
+      background: rgba(255,255,255,.12);
+      box-shadow: 0 0 25px rgba(255,106,169,.22);
+      pointer-events:none;
+      animation: floatUp linear infinite;
+      z-index:0;
+    }
+    @keyframes floatUp{
+      from{ transform: translateY(20vh) translateX(0) scale(.9); opacity:0}
+      10%{opacity:.9}
+      to{ transform: translateY(-120vh) translateX(90px) scale(1.1); opacity:0}
+    }
+
+    header{
+      position:relative;
+      z-index:1;
+      padding: 26px 18px 10px;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+    .brand{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      padding: 14px 14px;
+      border: var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border-radius: var(--radius2);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+    .logo{
+      width:44px;height:44px;
+      border-radius:14px;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,106,169,.95), rgba(124,92,255,.85));
+      display:grid;
+      place-items:center;
+      font-size:22px;
+      box-shadow: 0 10px 30px rgba(255,106,169,.25);
+    }
+    .title h1{ margin:0; font-size: 18px; letter-spacing:.2px; }
+    .title p{
+      margin:4px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height:1.35;
+    }
+
+    main{
+      position:relative;
+      z-index:1;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 14px 18px 60px;
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 14px;
+    }
+    @media (max-width: 900px){
+      main{grid-template-columns:1fr}
+    }
+
+    .card{
+      border: var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      padding: 16px;
+    }
+
+    .sectionTitle{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom: 10px;
+    }
+    .sectionTitle h2{ margin:0; font-size: 16px; }
+    .pill{
+      font-size: 12px;
+      color: rgba(238,242,255,.9);
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+    }
+
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 540px){
+      .grid2{grid-template-columns:1fr}
+    }
+
+    button{
+      cursor:pointer;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.07);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-weight: 600;
+      letter-spacing:.2px;
+      transition: transform .08s ease, background .18s ease, border .18s ease;
+      user-select:none;
+    }
+    button:hover{ background: rgba(255,255,255,.10)}
+    button:active{ transform: translateY(1px) scale(.99)}
+    .primary{
+      border-color: rgba(255,106,169,.35);
+      background: linear-gradient(180deg, rgba(255,106,169,.28), rgba(124,92,255,.18));
+      box-shadow: 0 12px 30px rgba(255,106,169,.14);
+    }
+    .good{
+      border-color: rgba(47,228,171,.35);
+      background: linear-gradient(180deg, rgba(47,228,171,.18), rgba(255,255,255,.06));
+    }
+    .danger{
+      border-color: rgba(255,209,102,.35);
+      background: linear-gradient(180deg, rgba(255,209,102,.16), rgba(255,255,255,.06));
+    }
+
+    .bigMessage{
+      border-radius: 16px;
+      padding: 14px;
+      background: rgba(0,0,0,.18);
+      border: 1px solid rgba(255,255,255,.10);
+      line-height:1.55;
+      color: rgba(238,242,255,.92);
+      min-height: 120px;
+    }
+    .bigMessage b{ color:#fff }
+    .hint{
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height:1.4;
+    }
+
+    canvas{
+      width:100%;
+      height: 300px;
+      border-radius: 16px;
+      background:
+        radial-gradient(500px 280px at 50% 60%, rgba(255,106,169,.18), transparent 55%),
+        rgba(0,0,0,.18);
+      border: 1px solid rgba(255,255,255,.10);
+      display:block;
+    }
+    .row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      margin-top: 10px;
+    }
+    .stat{
+      font-family: var(--mono);
+      font-size: 12.5px;
+      color: rgba(238,242,255,.82);
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+      padding: 8px 10px;
+      border-radius: 12px;
+    }
+
+    footer{
+      max-width:980px;
+      margin: 0 auto;
+      padding: 0 18px 24px;
+      color: rgba(238,242,255,.65);
+      font-size: 12.5px;
+      position:relative;
+      z-index:1;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    (function(){
+      const count = 18;
+      for(let i=0;i<count;i++){
+        const p=document.createElement('div');
+        p.className='particle';
+        const size = 6 + Math.random()*10;
+        p.style.width = p.style.height = size+'px';
+        p.style.left = (Math.random()*100)+'vw';
+        p.style.bottom = (-20 + Math.random()*50)+'vh';
+        p.style.animationDuration = (10 + Math.random()*16)+'s';
+        p.style.animationDelay = (-Math.random()*20)+'s';
+        p.style.opacity = (0.25 + Math.random()*0.5);
+        document.body.appendChild(p);
+      }
+    })();
+  </script>
+
+  <header>
+    <div class="brand">
+      <div class="logo">💗</div>
+      <div class="title">
+        <h1>Yavrum için mini rahatlama köşesi</h1>
+        <p>Bu sayfa “düzeltmek” için değil; <b>yanında olmak</b> için. İstersen ağla, istersen gül. Ben buradayım.</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="card">
+      <div class="sectionTitle">
+        <h2>Yavrum, şu an neye ihtiyacın var?</h2>
+        <span class="pill" id="timePill">hazırlanıyor…</span>
+      </div>
+
+      <div class="grid2">
+        <button class="primary" id="btnComfort">“Ağlamak istiyorum” modu</button>
+        <button class="good" id="btnSmile">“Biraz gülmek istiyorum” modu</button>
+        <button id="btnRandom">Bana rastgele tatlı bir şey söyle</button>
+      </div>
+
+      <div style="height:12px"></div>
+
+      <div class="bigMessage" id="messageBox">
+        <b>Yavrum</b>, burası senin güvenli alanın.  
+        <br><br>
+        İstersen sadece ekrana bak. İstersen küçük oyunu oynayıp zihnini dağıt.  
+        <br><br>
+        <span style="color:rgba(238,242,255,.75)">Not:</span> Kulaklık yok ama sorun değil; aşağıdaki “ambiyans”ı tamamen sessizde de kullanabilirsin.
+      </div>
+      <div class="hint">
+      </div>
+
+      <div style="height:14px"></div>
+
+      <div class="sectionTitle">
+        <h2>Ambiyans (çok kısık ve yumuşak)</h2>
+        <span class="pill">telifsiz • opsiyonel</span>
+      </div>
+      <div class="grid2">
+        <button id="btnAudio" class="primary">Ambiyansı Başlat</button>
+        <button id="btnMute">Sessiz / Durdur</button>
+        <button id="btnModeRain">Yağmur hissi</button>
+        <button id="btnModeWarm">Sıcak pıtırtı</button>
+      </div>
+      <div class="hint">Yavrum, kulaklığın yok o yüzden kısıkta kullan. İstersen hiç açma; oyun ve yazılar da yeterli.</div>
+
+      <div style="height:14px"></div>
+
+      <div class="sectionTitle">
+        <h2>Mini “iyi hisset” menüsü</h2>
+        <span class="pill">2 dakika</span>
+      </div>
+      <div class="grid2">
+        <button id="btnList1">3 şey söyle</button>
+        <button id="btnList2">1 küçük hedef</button>
+        <button id="btnList3">Vücut taraması</button>
+        <button id="btnList4">Kendine sarıl</button>
+      </div>
+      <div class="hint">İstersen sadece birini yap. “Az bile olsa” yeter yavrum.</div>
+    </section>
+
+    <aside class="card">
+      <div class="sectionTitle">
+        <h2>Mini oyun: Kalpleri yakala</h2>
+        <span class="pill">30 sn</span>
+      </div>
+      <canvas id="game" width="900" height="400"></canvas>
+      <div class="row">
+        <div class="stat" id="score">skor: 0</div>
+        <div class="stat" id="combo">combo: 0</div>
+        <div class="stat" id="timer">süre: 30</div>
+      </div>
+      <div class="row">
+        <button class="primary" id="btnGameStart">Oyunu Başlat</button>
+        <button id="btnGameStop">Durdur</button>
+      </div>
+      <div class="hint">Ekrana dokun/tıkla: kalbi yakala. Kaçarsa sorun değil yavrum, tekrar denersin.</div>
+    </aside>
+  </main>
+
+  <footer>
+    Bu sayfa “yavrum” için sevgiyle hazırlandı. İstersen metinleri kişiselleştirip tekrar gönder: kodun içindeki cümleleri değiştirmen yeterli.
+  </footer>
+
+  <script>
+    // Time pill
+    const timePill = document.getElementById('timePill');
+    const fmt = new Intl.DateTimeFormat('tr-TR', { weekday:'long', hour:'2-digit', minute:'2-digit' });
+    function tickTime(){ timePill.textContent = fmt.format(new Date()); }
+    tickTime(); setInterval(tickTime, 15000);
+
+    // Message logic
+    const messageBox = document.getElementById('messageBox');
+
+    const comfortLines = [
+      `Ağlamak istemen <b>çok normal</b>. Bazen içimizde biriken şeyin çıkması gerekir. Ben seni “düzeltmeye” çalışmıyorum; yanında duruyorum.`,
+      `Şu an en çok ihtiyacın olan şey “geçmesi” değil; <b>anlaşılmak</b>. Ben seni anlıyorum. Zor ve sıkılmış hissediyorsun.`,
+      `Kendine kızma. Bu duygu bir “hata veya suç” değil. Vücudun “yoruldum” diyor. Birlikte yavaşlayalım bolca vaktimiz var.`,
+    ];
+
+    const smileLines = [
+      `Mini bir görev: <b>kaşlarını</b> çok az kaldır. Sonra gözlerini kıs ve fotoğraf çek.`,
+      `Bugün “mutlu” sayılman için tek şart: <b>her halinle sevildiğini bilmen</b>.`,
+      `Hadi  kalp oyununu oynayalım. Skor önemli değil; Benim kalbim zaten sende.`,
+    ];
+
+    const randomSweet = [
+      `Senin kalbin çok güzel… ve ben o kalbin yorulduğu günlerde de yanındayım.`,
+      `Küçük bir hatırlatma: Korku ve üzüntün “büyük” olabilir; ama bu <b>sonsuz</b> değil.`,
+      `Unutma ben seni tek bir halinle değil; <b>tüm hallerinle</b> seviyorum.`,
+    ];
+
+
+    function setMessage(html){
+      messageBox.innerHTML = html;
+      messageBox.scrollIntoView({ behavior:'smooth', block:'center' });
+    }
+
+    document.getElementById('btnComfort').onclick = () => {
+      const t = comfortLines[Math.floor(Math.random()*comfortLines.length)];
+      setMessage(t);
+    };
+    document.getElementById('btnSmile').onclick = () => {
+      const t = smileLines[Math.floor(Math.random()*smileLines.length)];
+      setMessage(t + `<br><br><span style="color:rgba(238,242,255,.78)">Hazırsan küçük oyunu da açabiliriz yavrum.</span>`);
+    };
+    document.getElementById('btnRandom').onclick = () => {
+      setMessage(randomSweet[Math.floor(Math.random()*randomSweet.length)]);
+    };
+    document.getElementById('btnGround').onclick = () => setMessage(grounding);
+
+    
+
+    // WebAudio gentle ambience (no external files)
+    let audioCtx = null;
+    let master = null;
+    let noise = null;
+    let noiseGain = null;
+    let tone = null;
+    let toneGain = null;
+    let filter = null;
+    let mode = 'rain';
+
+    function createNoiseBuffer(ctx){
+      const bufferSize = ctx.sampleRate * 2;
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for(let i=0;i<bufferSize;i++){
+        data[i] = (Math.random()*2-1) * 0.65;
+      }
+      return buffer;
+    }
+
+    function startAudio(){
+      if(audioCtx) return;
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+      master = audioCtx.createGain();
+      master.gain.value = 0.0;
+      master.connect(audioCtx.destination);
+
+      filter = audioCtx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.value = 900;
+      filter.Q.value = 0.7;
+      filter.connect(master);
+
+      noise = audioCtx.createBufferSource();
+      noise.buffer = createNoiseBuffer(audioCtx);
+      noise.loop = true;
+
+      noiseGain = audioCtx.createGain();
+      noiseGain.gain.value = 0.0;
+      noise.connect(noiseGain);
+      noiseGain.connect(filter);
+
+      tone = audioCtx.createOscillator();
+      tone.type = 'sine';
+      tone.frequency.value = 196;
+      toneGain = audioCtx.createGain();
+      toneGain.gain.value = 0.0;
+      tone.connect(toneGain);
+      toneGain.connect(filter);
+
+      noise.start();
+      tone.start();
+
+      setAudioMode(mode);
+
+      const t = audioCtx.currentTime;
+      master.gain.cancelScheduledValues(t);
+      master.gain.setValueAtTime(0.0, t);
+      master.gain.linearRampToValueAtTime(0.12, t + 1.5);
+
+      setMessage(`Ambiyans çok kısık açıldı. İstersen sessizde de kalabilir. <br><br>İstersen şimdi “Biraz gülmek istiyorum” moduna bas ya da oyunu aç.`);
+    }
+
+    function stopAudio(){
+      if(!audioCtx) return;
+      const t = audioCtx.currentTime;
+      master.gain.cancelScheduledValues(t);
+      master.gain.setValueAtTime(master.gain.value, t);
+      master.gain.linearRampToValueAtTime(0.0, t + 0.6);
+      setTimeout(()=>{
+        try{
+          noise.stop(); tone.stop();
+          audioCtx.close();
+        }catch(e){}
+        audioCtx = null; master=null; noise=null; tone=null; filter=null;
+      }, 700);
+    }
+
+    function setAudioMode(m){
+      mode = m;
+      if(!audioCtx) return;
+      const t = audioCtx.currentTime;
+
+      if(mode === 'rain'){
+        filter.frequency.setValueAtTime(900, t);
+        noiseGain.gain.setValueAtTime(0.08, t);
+        tone.frequency.setValueAtTime(196, t);
+        toneGain.gain.setValueAtTime(0.015, t);
+
+        const lfo = audioCtx.createOscillator();
+        lfo.type = 'sine';
+        lfo.frequency.value = 0.12;
+        const lfoGain = audioCtx.createGain();
+        lfoGain.gain.value = 110;
+        lfo.connect(lfoGain);
+        lfoGain.connect(filter.frequency);
+        lfo.start();
+        filter._lfo && filter._lfo.stop && filter._lfo.stop();
+        filter._lfo = lfo;
+      } else {
+        filter.frequency.setValueAtTime(1200, t);
+        noiseGain.gain.setValueAtTime(0.04, t);
+        tone.frequency.setValueAtTime(247, t);
+        toneGain.gain.setValueAtTime(0.03, t);
+
+        const lfo = audioCtx.createOscillator();
+        lfo.type = 'sine';
+        lfo.frequency.value = 0.08;
+        const lfoGain = audioCtx.createGain();
+        lfoGain.gain.value = 0.012;
+        lfo.connect(lfoGain);
+        lfoGain.connect(toneGain.gain);
+        lfo.start();
+        filter._lfo && filter._lfo.stop && filter._lfo.stop();
+        filter._lfo = lfo;
+      }
+    }
+
+    document.getElementById('btnAudio').onclick = () => startAudio();
+    document.getElementById('btnMute').onclick = () => {
+      stopAudio();
+      setMessage(`Sessizlik de iyidir. İstersen oyun ve mini notlarla devam edelim.`);
+    };
+    document.getElementById('btnModeRain').onclick = () => {
+      setAudioMode('rain');
+      setMessage(`“yağmur hissi” seçildi. Çok kısık kalsın, yeter.`);
+    };
+    document.getElementById('btnModeWarm').onclick = () => {
+      setAudioMode('warm');
+      setMessage(`“sıcak pıtırtı” seçildi. İçin biraz yumuşasın diye…`);
+    };
+
+    // Game: catch hearts
+    const canvas = document.getElementById('game');
+    const ctx = canvas.getContext('2d');
+    const scoreEl = document.getElementById('score');
+    const comboEl = document.getElementById('combo');
+    const timerEl = document.getElementById('timer');
+
+    let hearts = [];
+    let running = false;
+    let score = 0;
+    let combo = 0;
+    let timeLeft = 30;
+    let lastSpawn = 0;
+    let lastTs = 0;
+    let gameLoopReq = null;
+
+    function resizeCanvas(){
+      const rect = canvas.getBoundingClientRect();
+      const dpr = Math.max(1, window.devicePixelRatio || 1);
+      canvas.width = Math.floor(rect.width * dpr);
+      canvas.height = Math.floor(rect.height * dpr);
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function spawnHeart(){
+      const w = canvas.getBoundingClientRect().width;
+      const h = canvas.getBoundingClientRect().height;
+      hearts.push({
+        x: Math.random()*(w-40)+20,
+        y: h + 30,
+        r: 16 + Math.random()*10,
+        vy: 60 + Math.random()*90,
+        vx: (Math.random()*2-1)*25,
+        hue: Math.random()<0.7 ? 335 : 265,
+        life: 0
+      });
+    }
+
+    function drawHeart(x,y,r,hue){
+      ctx.save();
+      ctx.translate(x,y);
+      ctx.scale(r/18, r/18);
+      ctx.beginPath();
+      ctx.moveTo(0, 6);
+      ctx.bezierCurveTo(0, -10, -18, -10, -18, 3);
+      ctx.bezierCurveTo(-18, 14, -6, 18, 0, 26);
+      ctx.bezierCurveTo(6, 18, 18, 14, 18, 3);
+      ctx.bezierCurveTo(18, -10, 0, -10, 0, 6);
+      ctx.closePath();
+
+      const grad = ctx.createRadialGradient(0,-2,2, 0,10,28);
+      grad.addColorStop(0, `hsla(${hue}, 95%, 85%, .95)`);
+      grad.addColorStop(1, `hsla(${hue}, 90%, 55%, .90)`);
+      ctx.fillStyle = grad;
+      ctx.shadowColor = `hsla(${hue}, 90%, 60%, .35)`;
+      ctx.shadowBlur = 18;
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function setStats(){
+      scoreEl.textContent = 'skor: ' + score;
+      comboEl.textContent = 'combo: ' + combo;
+      timerEl.textContent = 'süre: ' + Math.ceil(timeLeft);
+    }
+
+    function startGame(){
+      if(running) return;
+      running = true;
+      score = 0; combo = 0; timeLeft = 30;
+      hearts = [];
+      lastSpawn = 0;
+      lastTs = performance.now();
+      setStats();
+      setMessage(`Yavrum, 30 saniye sadece kalp yakalayacağız. “Mükemmel” değil; <b>oynamak</b> yeter.`);
+      loop(performance.now());
+    }
+
+    function stopGame(){
+      running = false;
+      if(gameLoopReq) cancelAnimationFrame(gameLoopReq);
+      gameLoopReq = null;
+    }
+
+    function endGame(){
+      stopGame();
+      setMessage(`Bitti Kestuk . Skor: <b>${score}</b>. <br><br>İstersen “Rastgele tatlı bir şey” butonuna bas ya da ambiyansı çok kısık aç.`);
+    }
+
+    function loop(ts){
+      if(!running) return;
+      const dt = Math.min(0.033, (ts - lastTs)/1000);
+      lastTs = ts;
+
+      timeLeft = Math.max(0, timeLeft - dt);
+      setStats();
+
+      const w = canvas.getBoundingClientRect().width;
+      const h = canvas.getBoundingClientRect().height;
+
+      lastSpawn += dt;
+      if(lastSpawn > 0.55){
+        spawnHeart();
+        if(Math.random()<0.35) spawnHeart();
+        lastSpawn = 0;
+      }
+
+      for(const heart of hearts){
+        heart.life += dt;
+        heart.y -= heart.vy * dt;
+        heart.x += heart.vx * dt;
+        heart.vx *= 0.995;
+      }
+
+      const before = hearts.length;
+      hearts = hearts.filter(he => he.y > -60);
+      if(hearts.length < before){
+        combo = Math.max(0, combo - 1);
+      }
+
+      ctx.clearRect(0,0, canvas.width, canvas.height);
+
+      ctx.globalAlpha = 0.22;
+      ctx.strokeStyle = 'rgba(255,255,255,.08)';
+      for(let i=0;i<6;i++){
+        ctx.beginPath();
+        ctx.arc(w*0.5, h*0.75, 60+i*34, 0, Math.PI*2);
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+
+      for(const he of hearts){
+        drawHeart(he.x, he.y, he.r, he.hue);
+      }
+
+      if(timeLeft <= 0.001){
+        endGame();
+        return;
+      }
+
+      gameLoopReq = requestAnimationFrame(loop);
+    }
+
+    function handleTap(clientX, clientY){
+      if(!running) return;
+      const rect = canvas.getBoundingClientRect();
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
+
+      let hitIndex = -1;
+      let best = 99999;
+      for(let i=0;i<hearts.length;i++){
+        const he = hearts[i];
+        const d = Math.hypot(he.x - x, he.y - y);
+        const threshold = he.r + 14;
+        if(d < threshold && d < best){
+          best = d;
+          hitIndex = i;
+        }
+      }
+
+      if(hitIndex >= 0){
+        hearts.splice(hitIndex,1);
+        combo += 1;
+        score += 10 + Math.min(20, combo);
+      } else {
+        combo = Math.max(0, combo - 1);
+      }
+      setStats();
+    }
+
+    canvas.addEventListener('click', (e)=>handleTap(e.clientX, e.clientY));
+    canvas.addEventListener('touchstart', (e)=>{
+      const t = e.touches[0];
+      handleTap(t.clientX, t.clientY);
+    }, { passive:true });
+
+    document.getElementById('btnGameStart').onclick = startGame;
+    document.getElementById('btnGameStop').onclick = () => {
+      stopGame();
+      setMessage(`Tamam oyun bitti. İstersen mini notlara geçiyoruz.`);
+    };
+
+    setTimeout(()=>{
+      setMessage(`Yavrum, şu an zorlanıyor olabilirsin… Ama yalnız değilsin. <br><br>İstersen “Ağlamak istiyorum” moduna bas, ya da  oyununu aç. Ben buradayım.Her zaman olduğu gibi beklerim.`);
+    }, 800);
+  </script>
+</body>
+</html>
