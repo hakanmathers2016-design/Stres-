@@ -199,13 +199,13 @@
             for (let i = 0; i < amount; i++) {
                 const heart = document.createElement('div');
                 // Kalp emojilerini çeşitlendir (Mor, Mavi, Lavanta tonları)
-                const emojis = ['🤍', '💜', '💙', '🌸', '✨'];
+                const emojis = ['🤍', '💜', '💙', '🧡', '💙'];
                 heart.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
                 
                 if (isGameHeart) {
                     heart.className = 'heart game-heart';
                     heart.onclick = function() { catchHeart(this); };
-                    heart.style.animationDuration = (Math.random() * 3 + 4) + 's'; // Oyunda daha yavaş
+                    heart.style.animationDuration = (Math.random() * 4 + 8) + 's'; // Oyunda daha yavaş
                 } else {
                     heart.className = 'heart';
                     heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
@@ -231,7 +231,7 @@
             // Her saniye yeni bir kalp üret
             gameInterval = setInterval(() => {
                 createHearts(1, true);
-            }, 800);
+            }, 400);
         }
 
         function stopGame() {
